@@ -6,17 +6,12 @@ package framework;
 
 import framework.Ms.*;
 import java.awt.Font;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
-import org.jbox2d.collision.shapes.PolygonShape;
 
 /**
  *
