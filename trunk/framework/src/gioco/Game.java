@@ -37,12 +37,13 @@ public class Game {
     public Player pl;
     public boolean matrixMovement = true;
 
+    
     public Game() {
     }
 
     public void start() {
         // init OpenGL here
-        boolean success = Window.initialise(800, 600);
+        boolean success = Window.initialise(1024, 768);
         Window.setMeterSpace(20, 15);
         Window.game2 = this;
 
@@ -61,8 +62,9 @@ public class Game {
          */
         this.world = new World(new Vec2(0, 0));
 
-        this.pl = new Player(1f, 1f, 5, 5);
-        map = new Map(80, 30);
+        this.pl = new Player(1f, 1f, 1, 1);
+        this.e2 = new Entity(1, 1, 4, 5);
+        map = new Map(30, 30);
 
         Controls.setKeys(new String[]{"W", "S", "A", "D", "SPACE"});
 
@@ -77,7 +79,7 @@ public class Game {
             update(delta);
             long startTime = System.currentTimeMillis();
             renderGL();
-            System.out.print(System.currentTimeMillis() - startTime + "\n");
+         //   System.out.print(System.currentTimeMillis() - startTime + "\n");
             Display.update();
             Display.sync(60); // cap fps to 60fps
         }
@@ -94,8 +96,9 @@ public class Game {
         Float[] bounds = Window.getBoundaries();
         GLU.gluOrtho2D(bounds[0], bounds[1], bounds[2], bounds[3]);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        //GL11.glEnable(GL11.GL_BLEND);
-        //GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
     }
@@ -128,7 +131,7 @@ public class Game {
         for (Entity entity : EntityCensus.ents) {
             entity.draw();
         }
-        pl.draw();//********************************
+     //   pl.draw();//********************************
     }
 
     public void setVisual() {
@@ -176,12 +179,35 @@ public class Game {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
     }
 
+    public void setVisualWithoutBorders()
+    {
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        //settare visuale decentrata sui bordi
+        float bordDX;
+        float bordSX;
+        float bordDOWN;
+        float bordUP;
+  
+        bordDX= pl.body.getPosition().x +Window.getBoundaries()[1];
+        bordSX= pl.body.getPosition().x +Window.getBoundaries()[0];;
+        bordDOWN= pl.body.getPosition().y  +Window.getBoundaries()[2];;
+        bordUP= pl.body.getPosition().y  +Window.getBoundaries()[3];;
+        
+        GLU.gluOrtho2D(bordSX
+                ,bordDX
+                ,bordDOWN
+                ,bordUP);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+           
+    }
+    
     public void update(int delta) {
         String read = Kb.getChars();
 
         this.pl.update();
 
-        world.step(1.0f / 60.0f, velIt, posIt);
+        world.step(1.0f / 60.f, velIt, posIt);
         //System.out.print(pl.c +" " + pl.r+"\n");
 
     }
