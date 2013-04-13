@@ -33,10 +33,8 @@ public class Player extends Entity {
             //this.setPosition(Window.game2.map.getMatrixPosition(this).getX(), Window.game2.map.getMatrixPosition(this).getY());
             
         }*/
-        if (getRotation)
-            Window.game2.setVisual();
+       Window.game2.setVisual();
         
-        getRotation = !getRotation;
        // Window.game2.setVisualWithoutBorders();
         Color.white.bind();
         GL11.glPushMatrix();
