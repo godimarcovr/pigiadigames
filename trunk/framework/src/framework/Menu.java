@@ -79,7 +79,7 @@ public class Menu {
         float wComp = percX*hSpace;
         float vLeap = (this.shape.w - hComp) / 2;
         float hLeap = (hSpace - wComp) / 2;
-        System.out.println(hLeap);
+     //   System.out.println(hLeap);
         for (int i = 0; i < comps.size(); i++) {
             Label label = comps.get(i);
             label.setPosition(this.shape.x + hLeap + (hSpace * i),this.shape.y + vLeap);

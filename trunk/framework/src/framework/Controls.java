@@ -13,7 +13,7 @@ import org.jbox2d.common.Vec2;
 public class Controls {
 
     public static String[] keys;
-    public static boolean isJumping=false;//da cambiare!!!
+    public static boolean isJumping=true;//da cambiare!!!
     public static int pl_forward = 0
             , pl_back = 1
             , pl_left = 2
