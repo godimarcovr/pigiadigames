@@ -46,7 +46,7 @@ public class Entity {
         bd.type = BodyType.DYNAMIC;
         bd.position = new Vec2(x, y);
         body = Window.game2.world.createBody(bd); 
-        
+        body.setUserData(this);
         this.fix = body.createFixture(fd);
 
 

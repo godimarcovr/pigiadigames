@@ -17,7 +17,7 @@ import org.newdawn.slick.Color;
  *
  * @author matteo
  */
-public class Element {
+public class Element{
     
     public PolygonShape pS;
     public Body body;
@@ -29,18 +29,20 @@ public class Element {
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
         bd.position = new Vec2(x, y);
+        
 
         FixtureDef fd = new FixtureDef();
         fd.shape = pS;
         fd.friction = 0f;
 
         body = Window.game2.world.createBody(bd);
+        body.setUserData(this);
         body.createFixture(fd);
     }
 
     public Element(Vec2[] vertex, float x, float y) {
         pS = new PolygonShape();
-        pS.set(vertex, vertex.length);
+       pS.set(vertex, vertex.length);
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
@@ -57,6 +59,7 @@ public class Element {
     
     public void draw() {
 
+      //  Color.blue.bind();
         GL11.glPushMatrix();
         GL11.glTranslatef(this.body.getPosition().x, this.body.getPosition().y, 0);
         GL11.glBegin(GL11.GL_QUADS);
