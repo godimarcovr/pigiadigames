@@ -63,7 +63,8 @@ public class Game {
          */
         this.world = new World(new Vec2(0, 0));
 
-        this.pl = new Player(1f, 1f, 1, 1);
+        this.pl = new Player(1f, 1f, 5, 5);
+      
         this.e2 = new Entity(1, 1, 8, 8);
         map = new Map(30, 30);
 
@@ -129,6 +130,7 @@ public class Game {
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         map.draw();
+        //   Window.debugDrawLine(0, 0, pl.body.getPosition().x, pl.body.getPosition().y);
          
 /*        for (Entity entity : EntityCensus.ents) {
             entity.draw();
@@ -206,9 +208,12 @@ public class Game {
     
     public void update(int delta) {
         String read = Kb.getChars();
-
+        if ("F".equals(read))
+        {
+            Window.debug = !Window.debug;
+        }
+        
         this.pl.update();
-
         world.step(1.0f / 60.f, velIt, posIt);
         //System.out.print(pl.c +" " + pl.r+"\n");
 

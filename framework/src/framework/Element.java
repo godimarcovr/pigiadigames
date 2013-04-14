@@ -22,11 +22,12 @@ public class Element {
     public PolygonShape pS;
     public Body body;
     boolean pol = false;
+    Color color;
 
     public Element(float w, float h, float x, float y) {
         pS = new PolygonShape();
         pS.setAsBox(w / 2, h / 2);
-
+        color = Color.red;
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
@@ -45,6 +46,7 @@ public class Element {
     public Element(Vec2[] vertex, float x, float y) {
         pS = new PolygonShape();
         pS.set(vertex, vertex.length);
+        color = Color.red;
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
@@ -61,10 +63,10 @@ public class Element {
     }
 
     public void draw() {
-
         //Color.blue.bind();
         GL11.glPushMatrix();
         GL11.glTranslatef(this.body.getPosition().x, this.body.getPosition().y, 0);
+        color.bind();
         if (!pol) {
             GL11.glBegin(GL11.GL_QUADS);
             {
@@ -82,6 +84,6 @@ public class Element {
         }
         GL11.glEnd();
         GL11.glPopMatrix();
-
+        
     }
 }

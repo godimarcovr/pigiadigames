@@ -19,19 +19,19 @@ import org.newdawn.slick.Color;
  */
 public class Window {
 
+    public static boolean debug;
     public static int w, h;
     public static Tester game;
     public static Game game2;
     public static Vec2 mSpace;
-    public static float conv,invconv;
-    public static Float[] bounds=new Float[4];
-
+    public static float conv, invconv;
+    public static Float[] bounds = new Float[4];
 
     public static boolean initialise(int width, int heigth) {
         try {
             Display.setDisplayMode(new DisplayMode(width, heigth));
-            w=width;
-            h=heigth;
+            w = width;
+            h = heigth;
             return true;
         } catch (LWJGLException ex) {
             ex.printStackTrace();
@@ -39,50 +39,65 @@ public class Window {
         }
     }
 
-    public static World getWorld(){
+    public static World getWorld() {
         return Window.game2.world;
     }
-    
-    public static void debugDrawLine(int x, int y, int fx, int fy)
-    {
-        
-        GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, 0);
-        Color.yellow.bind();
-        GL11.glBegin(GL11.GL_LINES);
-        {
-           GL11.glVertex2d(x, y) ;
-           GL11.glVertex2d(fx, fy);
+
+    public static void debugDrawLine(float x, float y, float fx, float fy) {
+        if (debug) {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0, 0, 0);
+            Color.yellow.bind();
+            GL11.glBegin(GL11.GL_LINES);
+            {
+                GL11.glVertex2d(x, y);
+                GL11.glVertex2d(fx, fy);
+            }
+            GL11.glEnd();
+            GL11.glPopMatrix();
         }
-        GL11.glEnd();
-        GL11.glPopMatrix();
     }
 
-    public static void setMeterSpace(Vec2 value){
-        Window.mSpace=value;
-        bounds[0]=-Window.mSpace.x/2.0f;
-        bounds[1]=Window.mSpace.x/2.0f;
-        bounds[2]=-Window.mSpace.y/2.0f;
-        bounds[3]=Window.mSpace.y/2.0f;
-        conv=w/mSpace.x;
-        invconv=mSpace.x/w;
+    public static void debugDrawLine(float x, float y, float fx, float fy, Color color) {
+        if (debug) {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0, 0, 0);
+            color.bind();
+            GL11.glBegin(GL11.GL_LINES);
+            {
+                GL11.glVertex2d(x, y);
+                GL11.glVertex2d(fx, fy);
+            }
+            GL11.glEnd();
+            GL11.glPopMatrix();
+        }
     }
 
-    public static void setMeterSpace(float x,float y){
-        Window.mSpace=new Vec2(x,y);
-        bounds[0]=-Window.mSpace.x/2.0f;
-        bounds[1]=Window.mSpace.x/2.0f;
-        bounds[2]=-Window.mSpace.y/2.0f;
-        bounds[3]=Window.mSpace.y/2.0f;
-        conv=w/mSpace.x;
-        invconv=mSpace.x/w;
+    public static void setMeterSpace(Vec2 value) {
+        Window.mSpace = value;
+        bounds[0] = -Window.mSpace.x / 2.0f;
+        bounds[1] = Window.mSpace.x / 2.0f;
+        bounds[2] = -Window.mSpace.y / 2.0f;
+        bounds[3] = Window.mSpace.y / 2.0f;
+        conv = w / mSpace.x;
+        invconv = mSpace.x / w;
     }
 
-    public static Float[] getBoundaries(){
-        bounds[0]=-Window.mSpace.x/2.0f;
-        bounds[1]=Window.mSpace.x/2.0f;
-        bounds[2]=-Window.mSpace.y/2.0f;
-        bounds[3]=Window.mSpace.y/2.0f;
+    public static void setMeterSpace(float x, float y) {
+        Window.mSpace = new Vec2(x, y);
+        bounds[0] = -Window.mSpace.x / 2.0f;
+        bounds[1] = Window.mSpace.x / 2.0f;
+        bounds[2] = -Window.mSpace.y / 2.0f;
+        bounds[3] = Window.mSpace.y / 2.0f;
+        conv = w / mSpace.x;
+        invconv = mSpace.x / w;
+    }
+
+    public static Float[] getBoundaries() {
+        bounds[0] = -Window.mSpace.x / 2.0f;
+        bounds[1] = Window.mSpace.x / 2.0f;
+        bounds[2] = -Window.mSpace.y / 2.0f;
+        bounds[3] = Window.mSpace.y / 2.0f;
         return bounds;
     }
 }
