@@ -17,19 +17,21 @@ import org.newdawn.slick.Color;
  *
  * @author matteo
  */
-public class Element{
-    
+public class Element {
+
     public PolygonShape pS;
     public Body body;
-    
-   public Element(float w, float h, float x, float y) {
+    boolean pol = false;
+
+    public Element(float w, float h, float x, float y) {
         pS = new PolygonShape();
-        pS.setAsBox(w/2, h/2);
+        pS.setAsBox(w / 2, h / 2);
+
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
         bd.position = new Vec2(x, y);
-        
+
 
         FixtureDef fd = new FixtureDef();
         fd.shape = pS;
@@ -42,7 +44,7 @@ public class Element{
 
     public Element(Vec2[] vertex, float x, float y) {
         pS = new PolygonShape();
-       pS.set(vertex, vertex.length);
+        pS.set(vertex, vertex.length);
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
@@ -51,26 +53,35 @@ public class Element{
         FixtureDef fd = new FixtureDef();
         fd.shape = pS;
         fd.friction = 0;
+        pol = true;
 
         body = Window.game2.world.createBody(bd);
+        body.setUserData(this);
         body.createFixture(fd);
     }
-    
-    
+
     public void draw() {
 
-      //  Color.blue.bind();
+        //Color.blue.bind();
         GL11.glPushMatrix();
         GL11.glTranslatef(this.body.getPosition().x, this.body.getPosition().y, 0);
-        GL11.glBegin(GL11.GL_QUADS);
-        {
-            for (int j = 0; j < pS.getVertexCount(); j++) {
-                GL11.glVertex2f(pS.getVertex(j).x, pS.getVertex(j).y);
+        if (!pol) {
+            GL11.glBegin(GL11.GL_QUADS);
+            {
+                for (int j = 0; j < pS.getVertexCount(); j++) {
+                    GL11.glVertex2f(pS.getVertex(j).x, pS.getVertex(j).y);
+                }
+            }
+        } else {
+            GL11.glBegin(GL11.GL_POLYGON);
+            {
+                for (int j = 0; j < pS.getVertexCount(); j++) {
+                    GL11.glVertex2f(pS.getVertex(j).x, pS.getVertex(j).y);
+                }
             }
         }
         GL11.glEnd();
         GL11.glPopMatrix();
 
     }
-    
 }

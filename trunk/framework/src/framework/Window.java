@@ -10,7 +10,8 @@ import org.jbox2d.dynamics.World;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 
 /**
  *
@@ -40,6 +41,21 @@ public class Window {
 
     public static World getWorld(){
         return Window.game2.world;
+    }
+    
+    public static void debugDrawLine(int x, int y, int fx, int fy)
+    {
+        
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0);
+        Color.yellow.bind();
+        GL11.glBegin(GL11.GL_LINES);
+        {
+           GL11.glVertex2d(x, y) ;
+           GL11.glVertex2d(fx, fy);
+        }
+        GL11.glEnd();
+        GL11.glPopMatrix();
     }
 
     public static void setMeterSpace(Vec2 value){
