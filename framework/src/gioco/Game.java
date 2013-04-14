@@ -20,6 +20,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.newdawn.slick.Color;
 
 /**
  *
@@ -63,7 +64,7 @@ public class Game {
         this.world = new World(new Vec2(0, 0));
 
         this.pl = new Player(1f, 1f, 1, 1);
-        this.e2 = new Entity(1, 1, 4, 5);
+        this.e2 = new Entity(1, 1, 8, 8);
         map = new Map(30, 30);
 
         Controls.setKeys(new String[]{"W", "S", "A", "D", "SPACE"});
@@ -128,6 +129,7 @@ public class Game {
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         map.draw();
+         
 /*        for (Entity entity : EntityCensus.ents) {
             entity.draw();
         }

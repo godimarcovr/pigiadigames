@@ -5,6 +5,8 @@
 package framework;
 
 import java.util.ArrayList;
+import java.util.Random;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.World;
 import org.lwjgl.opengl.GL11;
@@ -17,30 +19,17 @@ import org.newdawn.slick.Color;
 public class Map {
 
     public int w, h; //in metri
-    ArrayList<Element> objects = new ArrayList<Element>();
+    ArrayList<Element> boundary = new ArrayList<Element>();
+    ArrayList<Element> obstacles = new ArrayList<Element>();
 
     public Map(int w, int h) {
         this.w = w;
         this.h = h;
-        objects.add(new Element(w, 1, w / 2, 0.5f));
-        objects.add(new Element(1, h, 0.5f, h / 2));
-        objects.add(new Element(1, h, -0.5f + w, h / 2));
-        objects.add(new Element(w, 1, w / 2, h - 0.5f));
-
-        //this.mat.insertObject(new Element(1, 1, 0.5f, i+0.5f), i, 0);
-       /* for (int i = 0; i < w; i++) {
-         try{
-                
-         this.mat.insertObject(new Element(w, 1, i+0.5f, 0.5f), 0, i);
-         this.mat.insertObject(new Element(1, 1, 0.5f, i+0.5f), i, 0);
-         this.mat.insertObject(new Element(1, 1, h-0.5f, i+0.5f), i, 79);
-         //this.mat.insertObject(new Element(1, 1, 79.5f, i+0.5f), i, 79);
-         }
-         catch(Exception ex){
-                
-         }
-            
-         }*/
+        boundary.add(new Element(w, 1, w / 2, 0.5f));
+        boundary.add(new Element(1, h, 0.5f, h / 2));
+        boundary.add(new Element(1, h, -0.5f + w, h / 2));
+        boundary.add(new Element(w, 1, w / 2, h - 0.5f));
+        this.GenerateMap(52, w / 2, w / 4, w / 8, w / 8);
     }
 
     public void draw() {
@@ -52,10 +41,53 @@ public class Map {
                 ((Entity) b.getUserData()).draw();
             }
         }
+        Window.debugDrawLine(0, 0, 20, 20);
     }/*
-     for (Element element : objects) {
+     for (Element element : boundary) {
      element.draw();
      }*/
 
 
+    public void GenerateMap(int seed, int maxObs, int minObs, int maxW, int maxH) {
+        Random r = new Random(seed);
+        int nObj = minObs + (int) (r.nextFloat() * (maxObs - minObs));
+        System.out.println(nObj);
+        for (int i = 0; i < nObj; i++) {
+            float lenW = 1 + (float) (r.nextFloat() * (maxW - 1));
+            float lenH = 1 + (float) (r.nextFloat() * (maxH - 1));
+            float x = 1 + (float) (r.nextFloat() * (w - lenW));
+            float y = 1 + (float) (r.nextFloat() * (h - lenH));
+            Vec2[] v = GeneratePolygonVertex(8, r);
+            obstacles.add(new Element(v, x, y));
+           // obstacles.add(new Element(lenW, lenH, x, y));
+        }
+
+    }
+
+    public Vec2[] GeneratePolygonVertex(int maxVertex, Random r) {
+
+        int vertN = 3 + (int) (r.nextFloat() * (maxVertex - 3));
+        int radius = 2;
+        Vec2[] vertex = generateRegularPolygon(vertN,radius);
+        System.out.println("N" + vertN);
+        for (int i = 0; i < vertN; i++) {
+    /*        if (vertex[i].x < 0){
+                vertex[i].x -=  radius/4 + (r.nextFloat() * (radius/2 - radius/4));
+            }else
+            {
+                vertex[i].x +=  radius/4 + (r.nextFloat() * (radius/2 - radius/4));
+            }*/
+             vertex[i].x +=  -radius/2 + (r.nextFloat() * (radius/2 + radius/2));
+        }
+
+        return vertex;
+    }
+
+    private Vec2[] generateRegularPolygon(int vertN, float r) {
+        Vec2[] vertex = new Vec2[vertN];
+        for (int i = 0; i < vertN; i++) {
+            vertex[i] = new Vec2((float)(r * Math.cos(2 * Math.PI * i / vertN)), (float)(r * Math.sin(2 * Math.PI * i / vertN)));
+        }
+        return vertex;
+    }
 }
