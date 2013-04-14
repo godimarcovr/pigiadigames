@@ -29,19 +29,21 @@ public class Map {
         boundary.add(new Element(1, h, 0.5f, h / 2));
         boundary.add(new Element(1, h, -0.5f + w, h / 2));
         boundary.add(new Element(w, 1, w / 2, h - 0.5f));
-        this.GenerateMap(1, w / 2, w / 4, w / 8, w / 8);
+        this.GenerateMap(3, w / 2, w / 4, w / 8, w / 8);
     }
 
     public void draw() {
         Color.red.bind();//colore custom
         for (Body b = Window.game2.world.getBodyList(); b != null; b = b.getNext()) {
             if (b.getUserData() instanceof Element) {
+                Window.debugDrawLine(((Element) b.getUserData()).body.getPosition().x, ((Element) b.getUserData()).body.getPosition().y, Window.game2.pl.body.getPosition().x, Window.game2.pl.body.getPosition().y);
                 ((Element) b.getUserData()).draw();
             } else {
                 ((Entity) b.getUserData()).draw();
+                 Window.debugDrawLine(((Entity) b.getUserData()).body.getPosition().x, ((Entity) b.getUserData()).body.getPosition().y, Window.game2.pl.body.getPosition().x, Window.game2.pl.body.getPosition().y, Color.magenta);
             }
         }
-        Window.debugDrawLine(0, 0, 20, 20);
+        
     }/*
      for (Element element : boundary) {
      element.draw();
