@@ -29,7 +29,7 @@ public class Map {
         boundary.add(new Element(1, h, 0.5f, h / 2));
         boundary.add(new Element(1, h, -0.5f + w, h / 2));
         boundary.add(new Element(w, 1, w / 2, h - 0.5f));
-        this.GenerateMap(52, w / 2, w / 4, w / 8, w / 8);
+        this.GenerateMap(1, w / 2, w / 4, w / 8, w / 8);
     }
 
     public void draw() {
