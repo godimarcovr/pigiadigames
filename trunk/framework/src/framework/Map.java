@@ -20,6 +20,7 @@ public class Map {
 
     public int w, h; //in metri
     ArrayList<Element> boundary = new ArrayList<Element>();
+    //ArrayList<Entity> obstacles = new ArrayList<Entity>();
     ArrayList<Element> obstacles = new ArrayList<Element>();
 
     public Map(int w, int h) {
@@ -29,21 +30,21 @@ public class Map {
         boundary.add(new Element(1, h, 0.5f, h / 2));
         boundary.add(new Element(1, h, -0.5f + w, h / 2));
         boundary.add(new Element(w, 1, w / 2, h - 0.5f));
-        this.GenerateMap(3, w / 2, w / 4, w / 8, w / 8);
+        this.GenerateMap(4, w / 2, w / 4, w / 8, w / 8);
     }
 
     public void draw() {
         Color.red.bind();//colore custom
         for (Body b = Window.game2.world.getBodyList(); b != null; b = b.getNext()) {
             if (b.getUserData() instanceof Element) {
-                Window.debugDrawLine(((Element) b.getUserData()).body.getPosition().x, ((Element) b.getUserData()).body.getPosition().y, Window.game2.pl.body.getPosition().x, Window.game2.pl.body.getPosition().y);
+                // Window.debugDrawLine(((Element) b.getUserData()).body.getPosition().x, ((Element) b.getUserData()).body.getPosition().y, Window.game2.pl.body.getPosition().x, Window.game2.pl.body.getPosition().y);
                 ((Element) b.getUserData()).draw();
             } else {
                 ((Entity) b.getUserData()).draw();
-                 Window.debugDrawLine(((Entity) b.getUserData()).body.getPosition().x, ((Entity) b.getUserData()).body.getPosition().y, Window.game2.pl.body.getPosition().x, Window.game2.pl.body.getPosition().y, Color.magenta);
+                //   Window.debugDrawLine(((Entity) b.getUserData()).body.getPosition().x, ((Entity) b.getUserData()).body.getPosition().y, Window.game2.pl.body.getPosition().x, Window.game2.pl.body.getPosition().y, Color.magenta);
             }
         }
-        
+
     }/*
      for (Element element : boundary) {
      element.draw();
@@ -59,9 +60,13 @@ public class Map {
             float lenH = 1 + (float) (r.nextFloat() * (maxH - 1));
             float x = 1 + (float) (r.nextFloat() * (w - lenW));
             float y = 1 + (float) (r.nextFloat() * (h - lenH));
+            float restitution = r.nextFloat();
+            float friction = r.nextFloat();
+            float density = r.nextFloat();
             Vec2[] v = GeneratePolygonVertex(8, r);
-            obstacles.add(new Element(v, x, y));
-           // obstacles.add(new Element(lenW, lenH, x, y));
+            //obstacles.add(new Entity(v, x, y));
+            obstacles.add(new Element(v, x, y, friction, restitution, density));
+            // obstacles.add(new Element(lenW, lenH, x, y));
         }
 
     }
@@ -70,16 +75,16 @@ public class Map {
 
         int vertN = 3 + (int) (r.nextFloat() * (maxVertex - 3));
         int radius = 2;
-        Vec2[] vertex = generateRegularPolygon(vertN,radius);
+        Vec2[] vertex = generateRegularPolygon(vertN, radius);
         System.out.println("N" + vertN);
         for (int i = 0; i < vertN; i++) {
-    /*        if (vertex[i].x < 0){
-                vertex[i].x -=  radius/4 + (r.nextFloat() * (radius/2 - radius/4));
-            }else
-            {
-                vertex[i].x +=  radius/4 + (r.nextFloat() * (radius/2 - radius/4));
-            }*/
-             vertex[i].x +=  -radius/2 + (r.nextFloat() * (radius/2 + radius/2));
+            /*        if (vertex[i].x < 0){
+             vertex[i].x -=  radius/4 + (r.nextFloat() * (radius/2 - radius/4));
+             }else
+             {
+             vertex[i].x +=  radius/4 + (r.nextFloat() * (radius/2 - radius/4));
+             }*/
+            vertex[i].x += -radius / 2 + (r.nextFloat() * (radius / 2 + radius / 2));
         }
 
         return vertex;
@@ -88,7 +93,7 @@ public class Map {
     private Vec2[] generateRegularPolygon(int vertN, float r) {
         Vec2[] vertex = new Vec2[vertN];
         for (int i = 0; i < vertN; i++) {
-            vertex[i] = new Vec2((float)(r * Math.cos(2 * Math.PI * i / vertN)), (float)(r * Math.sin(2 * Math.PI * i / vertN)));
+            vertex[i] = new Vec2((float) (r * Math.cos(2 * Math.PI * i / vertN)), (float) (r * Math.sin(2 * Math.PI * i / vertN)));
         }
         return vertex;
     }

@@ -17,11 +17,11 @@ public class Main {
      */
     public static void main(String[] argv) {
         Game test = new Game();
-        Window.game2=test;
+        Window.game2 = test;
         test.start();
-        
+
         //Tester test = new Tester();
-        //Window.game=test;
-        //test.start();
+        // Window.game=test;
+        // test.start();
     }
 }
