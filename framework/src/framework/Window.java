@@ -84,11 +84,11 @@ public class Window {
 
         GL11.glPushMatrix();
         {
-            GL11.glTranslatef(unfixedBounds[0], unfixedBounds[3], 0);
+            GL11.glTranslatef(unfixedBounds[0]+x, unfixedBounds[3]-y, 0);
             GL11.glScalef(0.03f, -0.03f, 0);
             GL11.glEnable(GL11.GL_BLEND);
             TextureImpl.bindNone();
-            FontHandler.getFont(font).drawString(x, y, text, Color.white);
+            FontHandler.getFont(font).drawString(0, 0, text, Color.white);
             GL11.glDisable(GL11.GL_BLEND);
         }
         GL11.glPopMatrix();
