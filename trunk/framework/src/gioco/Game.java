@@ -140,7 +140,7 @@ public class Game {
         map.draw();
         Window.debugDrawLine(0, 0, pl.body.getPosition().x, pl.body.getPosition().y);
         Window.debugDrawStaticString(5, 5, Window.debugColor.toString(), f1);
-        Window.debugDrawHudString(5, 5, Window.debugColor.toString(), f1);
+        Window.debugDrawHudString(1, 1, Window.debugColor.toString(), f1);
         /*        for (Entity entity : EntityCensus.ents) {
          entity.draw();
          }
@@ -205,6 +205,7 @@ public class Game {
         bordDOWN = pl.body.getPosition().y + Window.getBoundaries()[2];;
         bordUP = pl.body.getPosition().y + Window.getBoundaries()[3];;
 
+        Window.setUnfixedBoundaries(bordSX, bordDX, bordDOWN, bordUP);
         GLU.gluOrtho2D(bordSX, bordDX, bordDOWN, bordUP);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
@@ -232,11 +233,21 @@ public class Game {
             } else if (Window.debugColor == Settings.DebugColor.Restitution) {
                 Window.debugColor = Settings.DebugColor.Density;
             }
+        } else if ("O".equals(read)) {
+            if (fps < FixedFps - 500) {
+                if (fps<60)
+                {
+                    FixedFps = 60;
+                }
+                FixedFps = fps;
+            }
         }
 
 
         this.pl.update();
         world.step(1.0f / FixedFps, velIt, posIt);
+
+
 
         //System.out.print(pl.c +" " + pl.r+"\n");
 
