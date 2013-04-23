@@ -36,7 +36,7 @@ public class Tester {
 
 
         // init OpenGL here
-        boolean success = Window.initialise(800, 600);
+        boolean success = Window.initialise(800, 600, false);
         try {
             Display.create();
         } catch (LWJGLException ex) {

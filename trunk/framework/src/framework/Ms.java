@@ -11,6 +11,7 @@ import org.lwjgl.input.Mouse;
  * @author matteo
  */
 public class Ms {
+
     private static Position lPosition = new Position();
     private static boolean lClicked;
     private static long lTime;
@@ -23,9 +24,8 @@ public class Ms {
     }
 
     public static float getY() {
-        return Window.h-Mouse.getY();
+        return Window.h - Mouse.getY();
     }
-
 
     public static Position getPosition() {
 
@@ -112,13 +112,13 @@ public class Ms {
         rControl(delta);
     }
 
-    public static float getAngle(){
-        float xMouse=Ms.getX()-(Window.w/2);
-        float yMouse=Ms.getY()-(Window.h/2);
+    public static float getAngle() {
+        float xMouse = Ms.getX() - (Window.w / 2);
+        float yMouse = Ms.getY() - (Window.h / 2);
         if (xMouse >= 0) {
-            return((float) Math.toDegrees((float) Math.atan(yMouse / xMouse)));
+            return ((float) Math.toDegrees((float) Math.atan(yMouse / xMouse)));
         } else {
-            return(180 - (float) Math.toDegrees(-(float) Math.atan(yMouse / xMouse)));
+            return (180 - (float) Math.toDegrees(-(float) Math.atan(yMouse / xMouse)));
         }
     }
 }

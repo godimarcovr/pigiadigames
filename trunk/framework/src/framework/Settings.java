@@ -10,6 +10,9 @@ package framework;
  */
 public class Settings {
 
+    static float ScaleRatioX = 0.03f;
+    static float ScaleRatioY = 0.03f;
+
     public static enum Shapes {
 
         CircularShape,
