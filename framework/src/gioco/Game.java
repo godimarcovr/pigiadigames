@@ -4,23 +4,26 @@
  */
 package gioco;
 
+import framework.Box;
+import framework.Button;
 import framework.Controls;
 import framework.Entity;
-import framework.EntityCensus;
-import framework.FontHandler;
+import framework.Hud;
 import framework.Kb;
+import framework.Label;
 import framework.Map;
 import framework.Ms;
 import framework.Player;
 import framework.Settings;
+import framework.TextBox;
 import framework.TimerHandler;
 import framework.Window;
-import java.awt.Font;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
@@ -38,22 +41,27 @@ public class Game {
     public World world;
     public int velIt = 6, posIt = 2;
     public Entity e2;
-    public int FixedFps = 120;
+    public int timeStep = 120;
+    int oldFPS;
     public Player pl;
     public boolean matrixMovement = true;
-    int f1;
+    public Hud hud;
 
     public Game() {
     }
 
     public void start() {
         // init OpenGL here
-        boolean success = Window.initialise(1024, 768);
-        Window.setMeterSpace(20, 15);
+        //CHANGE RESOLUTION HERE
+        boolean success = Window.initialise(1280, 768, true);
+        //  Window.setMeterSpace(20, 15);
         Window.game2 = this;
+
         //  Window.debug = true;
         try {
             Display.create();
+            // Display.setResizable(true);
+            // Display.setFullscreen(true);
         } catch (LWJGLException ex) {
             ex.printStackTrace();
         }
@@ -70,11 +78,24 @@ public class Game {
         this.pl = new Player(0.5f, 5, 5);
         pl.setModifiers(0, 0, 1);
 
+        this.hud = new Hud(new Box(0, 0, Window.w, Window.h));
+
+        Label label = new Label(new Box(Window.w - 200, Window.h - 100, 200, 100), "Label", 0, Color.red, Color.cyan, Color.lightGray);
+        TextBox textTest = new TextBox(new Box(Window.w - 200, Window.h - 200, 200, 100), "GODI LAMER", 0, Color.red, Color.cyan, Color.lightGray);
+        Button butTest2 = new Button(new Box(Window.w - 200, Window.h - 300, 200, 100), "Exit", 0, Color.red, Color.cyan, Color.lightGray, Color.green, Color.gray) {
+            @Override
+            public void run() {
+                System.exit(0);
+            }
+        };
+        hud.addComp(label);
+        hud.addComp(butTest2);
+        hud.addComp(textTest);
         this.e2 = new Entity(1, 1, 8, 8, 1, 0, 1);
         e2.setModifiers(0, 0, 1);
         map = new Map(50, 50);
 
-        f1 = FontHandler.createFont("Times New Roman", Font.PLAIN, 15);
+
         Controls.setKeys(new String[]{"W", "S", "A", "D", "SPACE"});
 
         /**
@@ -90,7 +111,7 @@ public class Game {
             renderGL();
             //   System.out.print(System.currentTimeMillis() - startTime + "\n");
             Display.update();
-            Display.sync(FixedFps); // cap fps to 60fps
+            Display.sync(timeStep); // cap fps to 60fps
         }
 
 
@@ -108,6 +129,7 @@ public class Game {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -138,9 +160,13 @@ public class Game {
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         map.draw();
+        hud.draw();
         Window.debugDrawLine(0, 0, pl.body.getPosition().x, pl.body.getPosition().y);
-        Window.debugDrawStaticString(5, 5, Window.debugColor.toString(), f1);
-        Window.debugDrawHudString(1, 1, Window.debugColor.toString(), f1);
+        Window.debugDrawStaticString(5, 5, Window.debugColor.toString(), 0);
+        Window.debugDrawHudString(1, 1, "COLOR TYPE: " + Window.debugColor.toString(), 0);
+        Window.debugDrawHudString(1, 2, "ZOOM RATIO: " + Window.ZOOMRATIO, 0);
+        Window.debugDrawHudString(1, 3, "MSX: " + Ms.getX(), 0);
+        Window.debugDrawHudString(1, 4, "MSY: " + Ms.getY(), 0);
         /*        for (Entity entity : EntityCensus.ents) {
          entity.draw();
          }
@@ -215,7 +241,7 @@ public class Game {
         String read = Kb.getChars();
         if ("F".equals(read)) {
             Window.debug = !Window.debug;
-        } else if ("P".equals(read)) {
+        } else if ("G".equals(read)) {
             if (world.getGravity().y == 9.8f) {
                 world.setGravity(new Vec2(0, -9.8f));
             } else if (world.getGravity().y == -9.8f) {
@@ -234,20 +260,37 @@ public class Game {
                 Window.debugColor = Settings.DebugColor.Density;
             }
         } else if ("O".equals(read)) {
-            if (fps < FixedFps - 500) {
-                if (fps<60)
-                {
-                    FixedFps = 60;
+            if (fps < timeStep - 500) {
+                if (fps < 60) {
+                    timeStep = 60;
                 }
-                FixedFps = fps;
+                timeStep = fps;
+            }
+        } else if ("M".equals(read)) {
+            if (Window.ZOOMRATIO == 1) {
+                Window.setZoomRatio(0.66f);
+            } else if (Window.ZOOMRATIO == 0.66f) {
+                Window.setZoomRatio(0.50f);
+            } else if (Window.ZOOMRATIO == 0.50f) {
+                Window.setZoomRatio(0.33f);
+            } else if (Window.ZOOMRATIO == 0.33f) {
+                Window.setZoomRatio(1f);
+            }
+        } else if ("P".equals(read)) {
+            if (timeStep != 0) {
+                oldFPS = timeStep;
+                timeStep = 0;
+            } else {
+                timeStep = oldFPS;
             }
         }
 
 
         this.pl.update();
-        world.step(1.0f / FixedFps, velIt, posIt);
-
-
+        if (timeStep != 0) {
+            world.step(1.0f / timeStep, velIt, posIt);
+        }
+        hud.update(read);
 
         //System.out.print(pl.c +" " + pl.r+"\n");
 

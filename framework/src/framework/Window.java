@@ -31,14 +31,24 @@ public class Window {
     public static float conv, invconv;
     public static Float[] bounds = new Float[4];
     public static Float[] unfixedBounds = new Float[4];
+    public static float ZOOMRATIO = 1.0f;
+    static float SCALERATIO = 0;
+    static float SCREENRATIO = 0;
+    static float PIXELTOMETERSRATIO = 51.2f;
+    static float STRINGZOOMRATIO = 1.3f;
+    public static Vec2 defmSpace;
 
-    public static boolean initialise(int width, int heigth) {
+    public static boolean initialise(int width, int heigth, boolean AutoSetup) {
         try {
             Display.setDisplayMode(new DisplayMode(width, heigth));
             w = width;
             h = heigth;
-
-
+            defmSpace = new Vec2(20, 15);
+            SCALERATIO = 1.0f / Window.w;
+            SCREENRATIO = Window.w / Window.h;
+            if (AutoSetup) {
+                autosetupMeterSpace();
+            }
             return true;
         } catch (LWJGLException ex) {
             ex.printStackTrace();
@@ -70,7 +80,7 @@ public class Window {
             GL11.glPushMatrix();
             {
                 GL11.glTranslatef(x, y, 0);
-                GL11.glScalef(0.03f, -0.03f, 0);
+                GL11.glScalef(mSpace.x * SCALERATIO, -mSpace.x * SCALERATIO, 0);
                 GL11.glEnable(GL11.GL_BLEND);
                 TextureImpl.bindNone();
                 FontHandler.getFont(font).drawString(0, 0, text, Color.white);
@@ -84,8 +94,9 @@ public class Window {
 
         GL11.glPushMatrix();
         {
-            GL11.glTranslatef(unfixedBounds[0]+x, unfixedBounds[3]-y, 0);
-            GL11.glScalef(0.03f, -0.03f, 0);
+
+            GL11.glTranslatef(unfixedBounds[0] + x * (mSpace.x / defmSpace.x), unfixedBounds[3] - y * (mSpace.y / defmSpace.y), 0);
+            GL11.glScalef(mSpace.x * SCALERATIO * STRINGZOOMRATIO, -mSpace.x * SCALERATIO * STRINGZOOMRATIO, 0);
             GL11.glEnable(GL11.GL_BLEND);
             TextureImpl.bindNone();
             FontHandler.getFont(font).drawString(0, 0, text, Color.white);
@@ -110,6 +121,11 @@ public class Window {
         }
     }
 
+    static void autosetupMeterSpace()
+    {
+        setMeterSpace(Window.w / (PIXELTOMETERSRATIO*ZOOMRATIO), Window.h / (PIXELTOMETERSRATIO*ZOOMRATIO));
+    }
+    
     public static void setMeterSpace(Vec2 value) {
         Window.mSpace = value;
         bounds[0] = -Window.mSpace.x / 2.0f;
@@ -143,5 +159,18 @@ public class Window {
         unfixedBounds[1] = y;
         unfixedBounds[2] = fx;
         unfixedBounds[3] = fy;
+    }
+
+    public static float getScaleRatioX() {
+        return (mSpace.x / defmSpace.x);
+    }
+
+    public static float getScaleRatioY() {
+        return (mSpace.y / defmSpace.y);
+    }
+
+    public static void setZoomRatio(float r) {
+        ZOOMRATIO = r;
+       autosetupMeterSpace();
     }
 }
