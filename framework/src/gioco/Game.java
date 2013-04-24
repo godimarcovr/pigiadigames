@@ -163,10 +163,16 @@ public class Game {
         hud.draw();
         Window.debugDrawLine(0, 0, pl.body.getPosition().x, pl.body.getPosition().y);
         Window.debugDrawStaticString(5, 5, Window.debugColor.toString(), 0);
+        Window.debugDrawHudString(1, 0, "DEBUG MODE: " + Window.debug, 0);
         Window.debugDrawHudString(1, 1, "COLOR TYPE: " + Window.debugColor.toString(), 0);
         Window.debugDrawHudString(1, 2, "ZOOM RATIO: " + Window.ZOOMRATIO, 0);
         Window.debugDrawHudString(1, 3, "MSX: " + Ms.getX(), 0);
         Window.debugDrawHudString(1, 4, "MSY: " + Ms.getY(), 0);
+        Window.debugDrawHudString(1, 5, "GRAVITY: " + world.getGravity().y, 0);
+        if (timeStep == 0) {
+            Window.debugDrawHudString(1, 6, "PAUSED", 0);
+        }
+
         /*        for (Entity entity : EntityCensus.ents) {
          entity.draw();
          }
@@ -260,12 +266,12 @@ public class Game {
                 Window.debugColor = Settings.DebugColor.Density;
             }
         } else if ("O".equals(read)) {
-            if (fps < timeStep - 500) {
+          /*  if (fps < timeStep - 500) {
                 if (fps < 60) {
                     timeStep = 60;
                 }
                 timeStep = fps;
-            }
+            }*/
         } else if ("M".equals(read)) {
             if (Window.ZOOMRATIO == 1) {
                 Window.setZoomRatio(0.66f);
@@ -283,6 +289,8 @@ public class Game {
             } else {
                 timeStep = oldFPS;
             }
+        }else if ("K".equals(read)) {
+            hud.setVisible(!hud.isVisible());
         }
 
 

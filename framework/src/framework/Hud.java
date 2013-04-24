@@ -22,6 +22,15 @@ public class Hud {
     Box shape;
     ArrayList<Label> comps;
     int f1;
+    boolean visible = true;
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean isVisible) {
+        this.visible = isVisible;
+    }
     float x, y;
 
     public Hud(Box shape) {
@@ -36,44 +45,44 @@ public class Hud {
         this.comps.add(lab);
     }
 
-
     public void initialize() {
         f1 = FontHandler.createFont("Times New Roman", Font.PLAIN, 15);
     }
 
     public void update(String read) {
-        for (Label label : comps) {
-            if (label instanceof TextBox) {
-                TextBox tlabel = (TextBox) label;
-                if (tlabel.isClicked() && !tlabel.isEnabled()) {
-                    tlabel.setEnabled(true);
-                } else if (Ms.isClicked() && !label.isHover()) {
-                    tlabel.setEnabled(false);
-                } else if (tlabel.isEnabled()) {
-                    tlabel.upText(read);
-                }
-                tlabel.update();
+        if (visible) {
+            for (Label label : comps) {
+                if (label instanceof TextBox) {
+                    TextBox tlabel = (TextBox) label;
+                    if (tlabel.isClicked() && !tlabel.isEnabled()) {
+                        tlabel.setEnabled(true);
+                    } else if (Ms.isClicked() && !label.isHover()) {
+                        tlabel.setEnabled(false);
+                    } else if (tlabel.isEnabled()) {
+                        tlabel.upText(read);
+                    }
+                    tlabel.update();
 
-            } else if (label instanceof Button) {
-                Button blabel = (Button) label;
-                if (blabel.isClicked()) {
-                    blabel.setEnabled(true);
-                } else if (!blabel.isClicked() && blabel.isEnabled() && blabel.isHover()) {
-                    blabel.run();
-                    blabel.setEnabled(false);
-                } else if (Ms.isClicked() && !blabel.isClicked()) {
-                    blabel.setEnabled(false);
+                } else if (label instanceof Button) {
+                    Button blabel = (Button) label;
+                    if (blabel.isClicked()) {
+                        blabel.setEnabled(true);
+                    } else if (!blabel.isClicked() && blabel.isEnabled() && blabel.isHover()) {
+                        blabel.run();
+                        blabel.setEnabled(false);
+                    } else if (Ms.isClicked() && !blabel.isClicked()) {
+                        blabel.setEnabled(false);
+                    }
                 }
             }
-
         }
     }
 
-   
-
     public void draw() {
-        for (int i = 0; i < comps.size(); i++) {
-            comps.get(i).scaledDraw();
+        if (visible) {
+            for (int i = 0; i < comps.size(); i++) {
+                comps.get(i).scaledDraw();
+            }
         }
     }
 }

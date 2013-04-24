@@ -39,6 +39,7 @@ public class Map {
             if (b.getUserData() instanceof Element) {
                 // Window.debugDrawLine(((Element) b.getUserData()).body.getPosition().x, ((Element) b.getUserData()).body.getPosition().y, Window.game2.pl.body.getPosition().x, Window.game2.pl.body.getPosition().y);
                 ((Element) b.getUserData()).draw();
+                
             } else {
                 ((Entity) b.getUserData()).draw();
                 //   Window.debugDrawLine(((Entity) b.getUserData()).body.getPosition().x, ((Entity) b.getUserData()).body.getPosition().y, Window.game2.pl.body.getPosition().x, Window.game2.pl.body.getPosition().y, Color.magenta);
