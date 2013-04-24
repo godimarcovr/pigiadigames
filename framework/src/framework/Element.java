@@ -158,9 +158,6 @@ public class Element {
 
         GL11.glPushMatrix();
         GL11.glTranslatef(this.body.getPosition().x, this.body.getPosition().y, 0);
-        if (this.shapeType != Settings.Shapes.SquareShape) {
-            GL11.glRotatef(360 - Ms.getAngle(), 0f, 0f, 1f);
-        }
         color.bind();
 
         if (shapeType == Settings.Shapes.SquareShape) {
