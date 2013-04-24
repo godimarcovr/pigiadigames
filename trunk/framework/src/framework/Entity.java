@@ -173,7 +173,6 @@ public class Entity {
         col.bind();
         GL11.glPushMatrix();
         GL11.glTranslatef(this.body.getPosition().x, this.body.getPosition().y, 0);
-        GL11.glRotatef(360 - Ms.getAngle(), 0f, 0f, 1f);
         if (shapeType == Settings.Shapes.SquareShape) {
             GL11.glBegin(GL11.GL_QUADS);
             {
