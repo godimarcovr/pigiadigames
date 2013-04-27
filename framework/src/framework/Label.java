@@ -124,7 +124,7 @@ public class Label {
             bgCol.bind();
             GL11.glPushMatrix();
             {
-                GL11.glTranslatef(unfixedBounds[0] + (this.shape.x/Window.w*(defmSpace.x)) * (mSpace.x / defmSpace.x), unfixedBounds[3] - (this.shape.y/Window.h*(defmSpace.y)) * (mSpace.y / defmSpace.y), 0);
+                GL11.glTranslatef(unfixedBounds[0] + (this.shape.x*Window.PIXELTOMETERS), unfixedBounds[3] - (this.shape.y*Window.PIXELTOMETERS), 0);
                 GL11.glScalef(mSpace.x * SCALERATIO, -mSpace.x * SCALERATIO, 0);
 
                 GL11.glBegin(GL11.GL_QUADS);

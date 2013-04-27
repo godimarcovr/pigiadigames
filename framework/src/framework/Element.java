@@ -38,7 +38,7 @@ public class Element {
         FixtureDef fd = new FixtureDef();
         fd.shape = pS;
         fd.friction = 0f;
-        fd.restitution = 1.0f;
+        fd.restitution = 0.0f;
         fd.density = 1.0f;
 
         body = Window.game2.world.createBody(bd);
@@ -155,7 +155,7 @@ public class Element {
             this.debugDraw();
             return;
         }
-
+        GL11.glRotatef(body.getAngle(), 0f, 0f, 1f);
         GL11.glPushMatrix();
         GL11.glTranslatef(this.body.getPosition().x, this.body.getPosition().y, 0);
         color.bind();

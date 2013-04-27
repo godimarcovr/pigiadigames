@@ -14,10 +14,14 @@ import framework.Label;
 import framework.Map;
 import framework.Ms;
 import framework.Player;
+import static framework.Player.pl;
 import framework.Settings;
 import framework.TextBox;
 import framework.TimerHandler;
 import framework.Window;
+import static framework.Window.defmSpace;
+import static framework.Window.mSpace;
+import static framework.Window.unfixedBounds;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 import org.lwjgl.LWJGLException;
@@ -41,7 +45,7 @@ public class Game {
     public World world;
     public int velIt = 6, posIt = 2;
     public Entity e2;
-    public int timeStep = 120;
+    public int timeStep = 60;
     int oldFPS;
     public Player pl;
     public boolean matrixMovement = true;
@@ -75,9 +79,10 @@ public class Game {
          */
         this.world = new World(new Vec2(0, 0));
         world.setSleepingAllowed(false);
-        this.pl = new Player(0.5f, 5, 5);
+        // this.pl = new Player(0.5f, 5, 5);
+        this.pl = new Player(1, 1f, 5, 5);
         pl.setModifiers(0, 0, 1);
-
+        this.setVisual();
         this.hud = new Hud(new Box(0, 0, Window.w, Window.h));
 
         Label label = new Label(new Box(Window.w - 200, Window.h - 100, 200, 100), "Label", 0, Color.red, Color.cyan, Color.lightGray);
@@ -164,11 +169,16 @@ public class Game {
         Window.debugDrawLine(0, 0, pl.body.getPosition().x, pl.body.getPosition().y);
         Window.debugDrawStaticString(5, 5, Window.debugColor.toString(), 0);
         Window.debugDrawHudString(1, 0, "DEBUG MODE: " + Window.debug, 0);
-        Window.debugDrawHudString(1, 1, "COLOR TYPE: " + Window.debugColor.toString(), 0);
-        Window.debugDrawHudString(1, 2, "ZOOM RATIO: " + Window.ZOOMRATIO, 0);
+        //    Window.debugDrawHudString(1, 1, "COLOR TYPE: " + Window.debugColor.toString(), 0);
+        //     Window.debugDrawHudString(1, 2, "ZOOM RATIO: " + Window.ZOOMRATIO, 0);
+            Window.debugDrawHudString(1, 1, "WPSX: " + (pl.body.getPosition().x - Window.unfixedBounds[0])*Window.METERSTOPIXEL, 0);
+                Window.debugDrawLine(Ms.getX()* Window.PIXELTOMETERS, Ms.getY()*Window.PIXELTOMETERS, pl.body.getPosition().x, pl.body.getPosition().y);
+        Window.debugDrawHudString(1, 2, "WPSY: " + pl.body.getPosition().y * Window.METERSTOPIXEL, 0);
         Window.debugDrawHudString(1, 3, "MSX: " + Ms.getX(), 0);
         Window.debugDrawHudString(1, 4, "MSY: " + Ms.getY(), 0);
         Window.debugDrawHudString(1, 5, "GRAVITY: " + world.getGravity().y, 0);
+        Window.debugDrawHudString(1, 6, "Bangle: " + pl.body.getAngle(), 0);
+        Window.debugDrawHudString(1, 7, "Mangle: " + Ms.getAngle(Window.w, Window.h), 0);
         if (timeStep == 0) {
             Window.debugDrawHudString(1, 6, "PAUSED", 0);
         }
@@ -266,12 +276,12 @@ public class Game {
                 Window.debugColor = Settings.DebugColor.Density;
             }
         } else if ("O".equals(read)) {
-          /*  if (fps < timeStep - 500) {
-                if (fps < 60) {
-                    timeStep = 60;
-                }
-                timeStep = fps;
-            }*/
+            /*  if (fps < timeStep - 500) {
+             if (fps < 60) {
+             timeStep = 60;
+             }
+             timeStep = fps;
+             }*/
         } else if ("M".equals(read)) {
             if (Window.ZOOMRATIO == 1) {
                 Window.setZoomRatio(0.66f);
@@ -289,7 +299,7 @@ public class Game {
             } else {
                 timeStep = oldFPS;
             }
-        }else if ("K".equals(read)) {
+        } else if ("K".equals(read)) {
             hud.setVisible(!hud.isVisible());
         }
 

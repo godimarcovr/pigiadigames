@@ -61,7 +61,7 @@ public class Map {
             float lenH = 1 + (float) (r.nextFloat() * (maxH - 1));
             float x = 1 + (float) (r.nextFloat() * (w - lenW));
             float y = 1 + (float) (r.nextFloat() * (h - lenH));
-            float restitution = r.nextFloat();
+            float restitution = 0;
             float friction = r.nextFloat();
             float density = r.nextFloat();
             Vec2[] v = GeneratePolygonVertex(8, r);
