@@ -18,13 +18,14 @@ public class Ms {
     private static Position rPosition = new Position();
     private static boolean rClicked;
     private static long rTime;
+    public static float angle = 0;
 
     public static float getX() {
         return Mouse.getX();
     }
 
     public static float getY() {
-        return Window.h - Mouse.getY();
+        return Mouse.getY();
     }
 
     public static Position getPosition() {
@@ -112,13 +113,23 @@ public class Ms {
         rControl(delta);
     }
 
-    public static float getAngle() {
-        float xMouse = Ms.getX() - (Window.w / 2);
-        float yMouse = Ms.getY() - (Window.h / 2);
-        if (xMouse >= 0) {
-            return ((float) Math.toDegrees((float) Math.atan(yMouse / xMouse)));
-        } else {
-            return (180 - (float) Math.toDegrees(-(float) Math.atan(yMouse / xMouse)));
+    public static float getAngle(float posX, float posY) {
+        if (Window.debug)
+        {
+            
+            System.out.println("AND");
         }
+        double deltaX = (Window.w / 2)- Ms.getX();
+        double deltaY =(Window.h / 2)- Ms.getY();
+
+        double xMouse = Ms.getX() - posX;
+        double yMouse = Ms.getY() - posY;
+        if (xMouse >= 0) {
+            angle = ((float) Math.toDegrees((float) Math.atan(yMouse / xMouse)));
+        } else {
+            angle = (180 - (float) Math.toDegrees(-(float) Math.atan(yMouse / xMouse)));
+        }
+        //angle = (float)-(Math.atan2(yMouse, xMouse)*180/Math.PI);
+        return angle;
     }
 }

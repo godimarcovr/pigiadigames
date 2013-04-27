@@ -88,15 +88,19 @@ public class Entity {
         BodyDef bd = new BodyDef();
         bd.type = BodyType.DYNAMIC;
         bd.position = new Vec2(x, y);
+       
 
+        
         FixtureDef fd = new FixtureDef();
         fd.shape = pS;
         fd.friction = 0;
         fd.density = 1.0f;
         fd.restitution = 1f;
+       
 
         body = Window.game2.world.createBody(bd);
         body.setUserData(this);
+        
         body.createFixture(fd);
 
         EntityCensus.addEntity(this);
@@ -173,6 +177,7 @@ public class Entity {
         col.bind();
         GL11.glPushMatrix();
         GL11.glTranslatef(this.body.getPosition().x, this.body.getPosition().y, 0);
+        GL11.glRotatef(body.getAngle(), 0f, 0f, 1f);
         if (shapeType == Settings.Shapes.SquareShape) {
             GL11.glBegin(GL11.GL_QUADS);
             {

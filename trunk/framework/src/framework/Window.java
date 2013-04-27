@@ -32,9 +32,10 @@ public class Window {
     public static Float[] bounds = new Float[4];
     public static Float[] unfixedBounds = new Float[4];
     public static float ZOOMRATIO = 1.0f;
-    static float SCALERATIO = 0;
+    public static float SCALERATIO = 0;
     static float SCREENRATIO = 0;
-    static float PIXELTOMETERSRATIO = 51.2f;
+    public static float METERSTOPIXEL = 50f;
+    public static float PIXELTOMETERS = 0.02f;
     static float STRINGZOOMRATIO = 1.3f;
     public static Vec2 defmSpace;
 
@@ -46,6 +47,7 @@ public class Window {
             defmSpace = new Vec2(20, 15);
             SCALERATIO = 1.0f / Window.w;
             SCREENRATIO = Window.w / Window.h;
+
             if (AutoSetup) {
                 autosetupMeterSpace();
             }
@@ -123,7 +125,7 @@ public class Window {
 
     static void autosetupMeterSpace()
     {
-        setMeterSpace(Window.w / (PIXELTOMETERSRATIO*ZOOMRATIO), Window.h / (PIXELTOMETERSRATIO*ZOOMRATIO));
+        setMeterSpace(Window.w / (METERSTOPIXEL*ZOOMRATIO), Window.h / (METERSTOPIXEL*ZOOMRATIO));
     }
     
     public static void setMeterSpace(Vec2 value) {
